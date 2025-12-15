@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\loren\\source\\repos\\vjezba7\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EE1F2BF7-F1AF-4027-A450-25A0BF0C606A}|vjezba7\\vjezba7.vcxproj|C:\\Users\\loren\\source\\repos\\vjezba7\\vjezba7\\vjezba7.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{EE1F2BF7-F1AF-4027-A450-25A0BF0C606A}|vjezba7\\vjezba7.vcxproj|solutionrelative:vjezba7\\vjezba7.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "vjezba7.cpp",
+              "DocumentMoniker": "C:\\Users\\loren\\source\\repos\\vjezba7\\vjezba7\\vjezba7.cpp",
+              "RelativeDocumentMoniker": "vjezba7\\vjezba7.cpp",
+              "ToolTip": "C:\\Users\\loren\\source\\repos\\vjezba7\\vjezba7\\vjezba7.cpp*",
+              "RelativeToolTip": "vjezba7\\vjezba7.cpp*",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAAAJ8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-12-08T14:19:32.929Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
