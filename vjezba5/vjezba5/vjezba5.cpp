@@ -1,43 +1,38 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
-
 typedef struct _node* position;
 typedef struct _node {
-    int number; 
+    int number;
     position next;
 } node;
+
 
 
 int pushSorted(position p, int number) {
     position q = (position)malloc(sizeof(node));
     if (q == NULL) {
-        printf("\nAllocation error!\n");
+        printf("Greska pri alokaciji memorije!\n");
         return -1;
     }
 
     q->number = number;
     q->next = NULL;
 
-
     while (p->next != NULL && p->next->number < number) {
         p = p->next;
     }
 
-    
     q->next = p->next;
     p->next = q;
 
     return 0;
 }
 
-
 void printList(position p) {
-    if (p == NULL || p->next == NULL) {
-        printf("\nLista je prazna!\n");
+    if (p == NULL) {
+        printf("Lista je prazna!\n");
         return;
     }
 
@@ -48,156 +43,163 @@ void printList(position p) {
     printf("\n");
 }
 
-
-position unionLists(position L1, position L2) {
-    position result = (position)malloc(sizeof(node)); 
-    if (result == NULL) {
-        printf("\nAllocation error in unionLists!\n");
-        return NULL;  
-    }
-    
-
-    result->next = NULL;
-
-
-    while (L1 != NULL && L2 != NULL) {
-        if (L1->number < L2->number) {
-            pushSorted(result, L1->number);
-            L1 = L1->next;
-        }
-        else if (L1->number > L2->number) {
-            pushSorted(result, L2->number);
-            L2 = L2->next;
-        }
-        else {
-            pushSorted(result, L1->number);
-            L1 = L1->next;
-            L2 = L2->next;
-        }
-    }
-
-    
-    while (L1 != NULL) {
-        pushSorted(result, L1->number);
-        L1 = L1->next;
-    }
-
-    
-    while (L2 != NULL) {
-        pushSorted(result, L2->number);
-        L2 = L2->next;
-    }
-
-    return result->next;
-}
-
-
-position intersectLists(position L1, position L2) {
-    position result = (position)malloc(sizeof(node));  
-    if (result == NULL) {
-        printf("\nAllocation error in intersectLists!\n");
-        return NULL; 
-    }
-    result->next = NULL;
-
-    
-    while (L1 != NULL && L2 != NULL) {
-        if (L1->number < L2->number) {
-            L1 = L1->next;
-        }
-        else if (L1->number > L2->number) {
-            L2 = L2->next;
-        }
-        else {
-            pushSorted(result, L1->number);
-            L1 = L1->next;
-            L2 = L2->next;
-        }
-    }
-
-    return result->next;
-}
-
 void deleteList(position p) {
     position temp;
     while (p != NULL) {
         temp = p;
         p = p->next;
         free(temp);
-    } //nez ugl delete list sredit i too
+    }
+}
+
+position unionLists(position L1, position L2) {
+    position head = (position)malloc(sizeof(node));
+    if (head == NULL) {
+        printf("Greska pri alokaciji (union)!\n");
+        return NULL;
+    }
+    head->next = NULL;
+
+    while (L1 != NULL && L2 != NULL) {
+        int value;
+
+        if (L1->number < L2->number) {
+            value = L1->number;
+            L1 = L1->next;
+        }
+        else if (L1->number > L2->number) {
+            value = L2->number;
+            L2 = L2->next;
+        }
+        else {
+            value = L1->number;
+            L1 = L1->next;
+            L2 = L2->next;
+        }
+
+        if (pushSorted(head, value) == -1) {
+            deleteList(head);
+            return NULL;
+        }
+    }
+
+    while (L1 != NULL) {
+        if (pushSorted(head, L1->number) == -1) {
+            deleteList(head);
+            return NULL;
+        }
+        L1 = L1->next;
+    }
+
+    while (L2 != NULL) {
+        if (pushSorted(head, L2->number) == -1) {
+            deleteList(head);
+            return NULL;
+        }
+        L2 = L2->next;
+    }
+
+    position result = head->next;
+    free(head);
+    return result;
+}
+
+position intersectLists(position L1, position L2) {
+    position head = (position)malloc(sizeof(node));
+    if (head == NULL) {
+        printf("Greska pri alokaciji (presjek)!\n");
+        return NULL;
+    }
+    head->next = NULL;
+
+    while (L1 != NULL && L2 != NULL) {
+        if (L1->number < L2->number)
+            L1 = L1->next;
+        else if (L1->number > L2->number)
+            L2 = L2->next;
+        else {
+            if (pushSorted(head, L1->number) == -1) {
+                deleteList(head);
+                return NULL;
+            }
+            L1 = L1->next;
+            L2 = L2->next;
+        }
+    }
+
+    position result = head->next;
+    free(head);
+    return result;
 }
 
 
+
 int main() {
-    node head1, head2;
-    head1.next = NULL;
-    head2.next = NULL;
-
-    int choice;
-    int number;
+    node head1 = { 0, NULL };
+    node head2 = { 0, NULL };
     position result = NULL;
-    int exitLoop = 1;
-    while (exitLoop != 0) {
-        printf("\nIzbornik:\n\n");
-        printf("1 - Unos brojeva u listu L1\n");
-        printf("2 - Unos brojeva u listu L2\n");
-        printf("3 - Ispis liste L1\n");
-        printf("4 - Ispis liste L2\n");
-        printf("5 - Unija lista L1 i L2\n");
-        printf("6 - Presjek lista L1 i L2\n");
-        printf("0 - Izlaz\n\n");
 
-        printf("Odabir:\t");
-        scanf(" %d", &choice);
+    int choice, number;
+
+    while (1) {
+        printf("\nIzbornik:\n");
+        printf("1 - Unos L1\n2 - Unos L2\n3 - Ispis L1\n4 - Ispis L2\n");
+        printf("5 - Unija\n6 - Presjek\n0 - Izlaz\n");
+        printf("Odabir: ");
+        scanf("%d", &choice);
 
         switch (choice) {
         case 1:
-            printf("\nUnesite brojeve za listu L1 (0 za kraj):\n");
+            printf("Unos L1 (0 za kraj):\n");
             while (1) {
-                printf("Unesite broj: ");
                 scanf("%d", &number);
                 if (number == 0) break;
-                pushSorted(&head1, number); 
+                if (pushSorted(&head1, number) == -1)
+                    return 1;
             }
             break;
+
         case 2:
-            printf("\nUnesite brojeve za listu L2 (0 za kraj):\n");
+            printf("Unos L2 (0 za kraj):\n");
             while (1) {
-                printf("Unesite broj: ");
                 scanf("%d", &number);
                 if (number == 0) break;
-                pushSorted(&head2, number);
+                if (pushSorted(&head2, number) == -1)
+                    return 1;
             }
             break;
+
         case 3:
-            printf("\nLista L1:\n");
             printList(head1.next);
             break;
+
         case 4:
-            printf("\nLista L2:\n");
             printList(head2.next);
             break;
+
         case 5:
             deleteList(result);
             result = unionLists(head1.next, head2.next);
-            printf("\nUnija lista:\n");
+            if (result == NULL) return 1;
             printList(result);
             break;
+
         case 6:
             deleteList(result);
             result = intersectLists(head1.next, head2.next);
-            printf("\nPresjek lista:\n");
+            if (result == NULL) return 1;
             printList(result);
             break;
+
         case 0:
             deleteList(head1.next);
             deleteList(head2.next);
             deleteList(result);
-            printf("\nIzlaz!\n");
+            printf("Izlaz!\n");
             return 0;
+
         default:
-            printf("\nPogrešan unos!\n");
-            break;
+            printf("Pogresan unos!\n");
         }
     }
 }
