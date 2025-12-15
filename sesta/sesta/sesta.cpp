@@ -18,7 +18,7 @@ position createNode() {
         return NULL;
     }
 
-    q->value = rand() % 91 + 10;  
+    q->value = rand() % 91 + 10;
     q->next = NULL;
     return q;
 }
@@ -130,11 +130,13 @@ int main() {
 
         switch (choice) {
         case 1:
-            push(&stackHead);
+            if(push(&stackHead)!=0)
+                printf("\n Pogreška pri dodavanju na stog!\n";
             break;
 
         case 2:
-            pop(&stackHead);
+            if (pop(&stackHead) != 0)
+                printf("\n Pogreška pri izbacivanju sa stoga!\n";
             break;
 
         case 3:
@@ -142,11 +144,13 @@ int main() {
             break;
 
         case 4:
-            enqueue(&queueHead);
+            if (enqueue(&queueHead) != 0)
+                printf("\nGreska pri dodavanju u red!\n");
             break;
 
         case 5:
-            dequeue(&queueHead);
+            if (dequeue(&queueHead) != 0)
+                printf("\nGreska pri izbacivanju iz reda!\n");
             break;
 
         case 6:
@@ -174,3 +178,4 @@ int main() {
 
     return 0;
 }
+

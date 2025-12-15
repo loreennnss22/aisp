@@ -132,42 +132,80 @@ int isEmpty(Node* head) {
 }
 
 
+
 int main() {
-    srand(time(NULL));  
+        srand((unsigned)time(NULL));
 
-    
-    int max_size;
-    printf("Unesite maksimalni broj elemenata stoga: ");
-    scanf("%d", &max_size);
-    CircularStack stack;
-    startStack(&stack, max_size);
-    
-    printf("\nStog:\n");
+        CircularStack stack;
+        int max_size;
+        int choice;
+        int value, priority;
 
-    for (int i = 0; i < 3; i++) {
-        int element = rand() % 91 + 10;  
-        pushStack(&stack, element);
+        printf("Unesite maksimalni broj elemenata stoga: ");
+        scanf_s("%d", &max_size);
+
+        startStack(&stack, max_size);
+
+        Node* pq = NULL;
+
+        do {
+            printf("\n IZBORNIK \n");
+            printf("1 - Push na stog\n");
+            printf("2 - Pop sa stoga\n");
+            printf("3 - Push u red s prioritetom\n");
+            printf("4 - Pop iz reda\n");
+            printf("0 - Izlaz\n");
+            printf("Odabir: ");
+            scanf("%d", &choice);
+
+            switch (choice) {
+
+            case 1:
+                printf("Unesite vrijednost: ");
+                scanf("%d", &value);
+
+                if (isStackFull(&stack)) {
+                    printf("Stog je pun!\n");
+                }
+                else {
+                    pushStack(&stack, value);
+                }
+                break;
+
+            case 2:
+                value = popStack(&stack);
+                if (value == -1) {
+                    printf("Neuspjesno uklanjanje sa stoga.\n");
+                }
+                break;
+
+            case 3:
+                printf("Unesite vrijednost: ");
+                scanf("%d", &value);
+                printf("Unesite prioritet: ");
+                scanf("%d", &priority);
+
+                pq = push(pq, value, priority);
+                break;
+
+            case 4:
+                if (isEmpty(pq)) {
+                    printf("Red je prazan!\n");
+                }
+                else {
+                    pq = pop(pq);
+                }
+                break;
+
+            case 0:
+                printf("Izlaz iz programa.\n");
+                break;
+
+            default:
+                printf("Pogresan unos!\n");
+            }
+
+        } while (choice != 0);
+
+        return 0;
     }
-
-    
-    popStack(&stack);
-    popStack(&stack);
-
-    printf("\nRed:\n");
-
-    Node* pq = NULL;
-
-    
-    for (int i = 0; i < 5; i++) {
-        int element = rand() % 91 + 10;  
-        int priority = rand() % 5 + 1;   
-        pq = push(pq, element, priority);
-    }
-
-    
-    while (!isEmpty(pq)) {
-        pq = pop(pq);  
-    }
-
-    return 0;
-}
